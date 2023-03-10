@@ -1,9 +1,9 @@
 
-POST http://localhost:3001/usuarios/ HTTP/1.1
+POST http://localhost:3001/api/usuarios/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "codigo": "us2000",
+    "codigo": "us2001",
     "nombre": "Saul",
     "apellido": "Vasquez",
     "fecha_nacimiento": "2002-05-27",
@@ -11,4 +11,33 @@ Content-Type: application/json
     "correo": "saul.vasquez@uptc.edu.co",
     "password": "43215",
     "tipoUsuario": "cliente"
+}
+
+
+# {
+#     "codigo":"us101",
+#     "nombre":"juan",
+#     "apellido":"alimaña",
+#     "fecha_nacimiento":"2023-03-05T05:00:00.000Z",
+#     "sexo":"H","correo":"juan.alimaña@brunno.com",
+#     "password":"12345",
+#     "tipoUsuario":"cliente"
+# }
+
+### 
+DELETE http://localhost:3001/api/usuarios/us2001 HTTP/1.1
+
+###
+PATCH  https://localhost:3001/api/usuarios/us2001 HTTP/1.1
+Content-Type: application/json
+
+{
+    "codigo": "us2001",
+    "nombre":"Daniel",
+    "apellido":"Vasquez",
+    "fecha_nacimiento":"2023-03-05T05:00:00.000Z",
+    "sexo":"H",
+    "correo":"daniel.vasquez@brunno.com",
+    "password":"12345",
+    "tipoUsuario":"cliente",
 }

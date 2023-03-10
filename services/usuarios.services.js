@@ -4,14 +4,18 @@ const {pool} = require('./connectBD');
 const create = async (req, res) => {
     try{
         const body = req.body;
-        const query = `INSERT INTO usuarios VALUES ('${body.codigo}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', ${body.tipoUsuario})`;
+        const query = `INSERT INTO usuarios VALUES ('${body.codigo}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
         //const queryUsuarios = `INSERT INTO usuarios VALUES ('${body.codigo}', '${body.correo}', '${body.password}', 'estudiante')`;  //crea el usuario en otra tabla de usuarios generales que permite el login de todo tipo  de usuario
         const [rows] = await pool.query(query);
-        //await pool.query(queryUsuarios);
         res.status(201).send(rows);
     }catch (error) {
         console.log(error);
-        return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/create'});
+        if(error.errno === 1062){
+            return res.status(500).json({message: `el usuario con el id: ${req.body.codigo} ya existe`});
+        }else{
+            return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/create'});
+        }
+        
     }
 }
 
@@ -72,7 +76,7 @@ const deletear = async (req, res) => {
         if(result.affectedRows <= 0 ){
             res.status(404).send('usuario no encontrado');
         }else{
-            res.status(204).send(`usuario con codigo ${id} eliminado`);
+            res.status(200).send(`usuario con codigo ${id} eliminado`);
         }
     }catch (error) {
         return res.status(500).json({message: 'Algo ha salido mal. ruta: usuarios.services/deletear'});

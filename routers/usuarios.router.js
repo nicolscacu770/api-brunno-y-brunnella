@@ -6,7 +6,6 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/', service.find);
-
 router.get('/:id', service.findOne);
 
 router.post('/', service.create);
