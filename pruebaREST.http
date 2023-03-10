@@ -1,0 +1,14 @@
+
+POST http://localhost:3001/usuarios/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "codigo": "us2000",
+    "nombre": "Saul",
+    "apellido": "Vasquez",
+    "fecha_nacimiento": "2002-05-27",
+    "sexo": "H",
+    "correo": "saul.vasquez@uptc.edu.co",
+    "password": "43215",
+    "tipoUsuario": "cliente"
+}
