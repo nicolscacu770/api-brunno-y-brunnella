@@ -26,7 +26,7 @@ const find = async (req, res) => {
         res.send({ rows });
     }catch (error) {
         console.error(error);
-        return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/find'});
+        return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/find' + error});
     }
     
 }
