@@ -5,19 +5,18 @@ const create = async (req, res) => {
     try{
         const body = req.body;
         //console.log(body.id, ", ", body.nombre, ", ", body.apellido, ", ", body.correo, ", ", body.password )
-        if(body.id == undefined || body.nombre == undefined || body.apellido == undefined || body.correo == undefined || body.password == undefined ){
-            //console.log(body.id, ", "body. )
+        if(body.nombre == undefined || body.apellido == undefined || body.correo == undefined || body.password == undefined ){
             return res.status(500).json({message: `datos faltantes`})
-        }else if(body.id == "" || body.nombre == "" || body.apellido == "" || body.correo == "" || body.password == "" ){
+        }else if(body.nombre == "" || body.apellido == "" || body.correo == "" || body.password == "" ){
             return res.status(500).json({message: `campos vacíos`})
         }else{
-            const query = `INSERT INTO usuarios VALUES ('${body.id}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
-            //const queryUsuarios = `INSERT INTO usuarios VALUES ('${body.id}', '${body.correo}', '${body.password}', 'estudiante')`;  //crea el usuario en otra tabla de usuarios generales que permite el login de todo tipo  de usuario
+            const query = `INSERT INTO usuarios VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}')`;
             const [rows] = await pool.query(query);
             res.status(201).send(rows);
         }
     }catch (error) {
         console.log(error);
+        //REVISAR
         if(error.errno === 1062){
             return res.status(500).json({message: `el usuario con el id: ${req.body.id} ya existe`});
         }else if(error.errno === 1366 || error.errno === 1265){
@@ -52,8 +51,8 @@ const find = async (req, res) => {
 
 const findOne = async (req, res) => {
     try{
-        idUsuario = req.params.id;
-        const query = `SELECT * FROM usuarios where id = '${idUsuario}'`;
+        correoUsuario = req.params.correo;
+        const query = `SELECT * FROM usuarios where correo = '${correoUsuario}'`;
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
@@ -70,9 +69,9 @@ const findOne = async (req, res) => {
 
 const update = async (req, res) => {
     try{
-        const { id } = req.params;
+        const { correo } = req.params;
         const body = req.body;
-        const query = `UPDATE usuarios SET id = '${id}',  nombre = '${body.nombre}', apellido = '${body.apellido}', fecha_nacimiento = '${body.fecha_nacimiento}', sexo = '${body.sexo}', correo = '${body.correo}', password = '${body.password}', tipoUsuario = '${body.tipoUsuario}'    WHERE id = '${id}'`;
+        const query = `UPDATE usuarios SET nombre = '${body.nombre}', apellido = '${body.apellido}', fecha_nacimiento = '${body.fecha_nacimiento}', sexo = '${body.sexo}', correo = '${body.correo}', password = '${body.password}', tipoUsuario = '${body.tipoUsuario}'    WHERE correo = '${correo}'`;
         const [result] = await pool.query(query);
     
         if(result.affectedRows === 0){
@@ -81,6 +80,7 @@ const update = async (req, res) => {
             const [rows] = await pool.query(`SELECT * FROM usuarios WHERE id = '${id}'`)
             res.json(rows);
         }
+        //VALIDACIÓN DE CAMBIO DE CORREO EN CASO DE ESTAR DUPLICADO
     }catch (error) {
         return res.status(500).json({message: 'Algo ha salido mal. ruta: usuarios.services/update'});
     }
@@ -88,14 +88,14 @@ const update = async (req, res) => {
 
 const deletear = async (req, res) => {
     try{
-        const { id } = req.params;
-        const query = `DELETE FROM usuarios WHERE id = '${id}'`;
+        const { correo } = req.params;
+        const query = `DELETE FROM usuarios WHERE correo = '${correo}'`;
         const [result] = await pool.query(query);
         
         if(result.affectedRows <= 0 ){
             res.status(404).send('usuario no encontrado');
         }else{
-            res.status(200).send(`usuario con id ${id} eliminado`);
+            res.status(200).send(`usuario con correo ${correo} eliminado`);
         }
     }catch (error) {
         return res.status(500).json({message: 'Algo ha salido mal. ruta: usuarios.services/deletear'});
