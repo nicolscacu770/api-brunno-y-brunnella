@@ -8,6 +8,9 @@ const create = async (req, res) => {
         if(body.id == undefined || body.nombre == undefined || body.apellido == undefined || body.correo == undefined || body.password == undefined ){
             //console.log(body.id, ", "body. )
             return res.status(500).json({message: `datos faltantes`})
+        }else if(body.id == "" || body.nombre == "" || body.apellido == "" || body.correo == "" || body.password == "" ){
+            //console.log(body.id, ", "body. )
+            return res.status(500).json({message: `campos vacíos`})
         }else{
             const query = `INSERT INTO usuarios VALUES ('${body.id}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
             //const queryUsuarios = `INSERT INTO usuarios VALUES ('${body.id}', '${body.correo}', '${body.password}', 'estudiante')`;  //crea el usuario en otra tabla de usuarios generales que permite el login de todo tipo  de usuario
@@ -18,8 +21,8 @@ const create = async (req, res) => {
         console.log(error);
         if(error.errno === 1062){
             return res.status(500).json({message: `el usuario con el id: ${req.body.id} ya existe`});
-        }else if(error.errno === 1366 ){
-            return res.status(422).json({message: `el tipo de datos no coincide (String -> int)`});
+        }else if(error.errno === 1366 || error.errno === 1265){
+            return res.status(422).json({message: `el tipo de datos no coincide`});
         }else if(error.errno === 1292 ){
             return res.status(422).json({message: `el formato del campo fecha es invalido. es: (año-mes-dia)`});
         }else if(error.errno === 1406 ){
