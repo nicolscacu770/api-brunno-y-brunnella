@@ -4,12 +4,11 @@ const {pool} = require('./connectBD');
 const create = async (req, res) => {
     try{
         const body = req.body;
-
+        console.log(body.id, ", ", body.nombre, ", ", body.apellido, ", ", body.correo, ", ", body.password )
         if(body.id == undefined || body.nombre == undefined || body.apellido == undefined || body.correo == undefined || body.password == undefined ){
             //console.log(body.id, ", "body. )
             return res.status(500).json({message: `datos faltantes`})
         }else if(body.id == "" || body.nombre == "" || body.apellido == "" || body.correo == "" || body.password == "" ){
-            //console.log(body.id, ", "body. )
             return res.status(500).json({message: `campos vacíos`})
         }else{
             const query = `INSERT INTO usuarios VALUES ('${body.id}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
