@@ -4,7 +4,7 @@ const {pool} = require('./connectBD');
 const create = async (req, res) => {
     try{
         const body = req.body;
-        const query = `INSERT INTO usuarios VALUES ('${body.codigo}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
+        const query = `INSERT INTO usuarios VALUES ('${body.id}', '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}', '${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
         //const queryUsuarios = `INSERT INTO usuarios VALUES ('${body.codigo}', '${body.correo}', '${body.password}', 'estudiante')`;  //crea el usuario en otra tabla de usuarios generales que permite el login de todo tipo  de usuario
         const [rows] = await pool.query(query);
         res.status(201).send(rows);
@@ -34,7 +34,7 @@ const find = async (req, res) => {
 const findOne = async (req, res) => {
     try{
         codigoUsuario = req.params.id;
-        const query = `SELECT * FROM usuarios where CODIGO = '${codigoUsuario}'`;
+        const query = `SELECT * FROM usuarios where id = '${codigoUsuario}'`;
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
@@ -53,7 +53,7 @@ const update = async (req, res) => {
     try{
         const { id } = req.params;
         const body = req.body;
-        const query = `UPDATE usuarios SET codigo = '${id}',  nombre = '${body.nombre}', apellido = '${body.apellido}', fecha_nacimiento = '${body.fecha_nacimiento}', sexo = '${body.sexo}', correo = '${body.correo}', password = '${body.password}', tipoUsuario = '${body.tipoUsuario}'    WHERE codigo = '${id}'`;
+        const query = `UPDATE usuarios SET id = '${id}',  nombre = '${body.nombre}', apellido = '${body.apellido}', fecha_nacimiento = '${body.fecha_nacimiento}', sexo = '${body.sexo}', correo = '${body.correo}', password = '${body.password}', tipoUsuario = '${body.tipoUsuario}'    WHERE codigo = '${id}'`;
         const [result] = await pool.query(query);
     
         if(result.affectedRows === 0){
@@ -70,7 +70,7 @@ const update = async (req, res) => {
 const deletear = async (req, res) => {
     try{
         const { id } = req.params;
-        const query = `DELETE FROM usuarios WHERE codigo = '${id}'`;
+        const query = `DELETE FROM usuarios WHERE id = '${id}'`;
         const [result] = await pool.query(query);
         
         if(result.affectedRows <= 0 ){
