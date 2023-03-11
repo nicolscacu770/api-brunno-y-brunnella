@@ -10,7 +10,7 @@ const create = async (req, res) => {
         }else if(body.nombre == "" || body.apellido == "" || body.correo == "" || body.password == "" ){
             return res.status(500).json({message: `campos vacíos`})
         }else{
-            const query = `INSERT INTO usuarios VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}')`;
+            const query = `INSERT INTO usuarios (nombre, apellido, correo, password) VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}')`;
             const [rows] = await pool.query(query);
             res.status(201).send(rows);
         }
