@@ -2,6 +2,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mysql2": "^3.2.0",
     "http": "^0.0.1-security"
   },
   "name": "proyecto_brunnella",
