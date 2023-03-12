@@ -1,9 +1,22 @@
 const express = require('express');
+const cors = require('cors')
 const routerApi = require('./routers/index.routers')
 const {PORT} = require('./config');
 
 const app = express();
 app.use(express.json());
+
+const whitelist = ['http:localhost:8080', ]
+const options = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)){
+      callback(null, true);
+    } else{
+      callback(new Error('no permitido'))
+    }
+  }
+}
+app.use(cors(options));
 
 app.get('/', (req, res) => {
   res.send('Servidor de B&B running en express')
