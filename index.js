@@ -16,7 +16,7 @@ const options = {
     }
   }
 }
-app.use(cors(options));
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Servidor de B&B running en express')
