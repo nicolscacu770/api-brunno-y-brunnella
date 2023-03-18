@@ -2,34 +2,78 @@ const {pool} = require('./connectBD');
 
 
 const create = async (req, res) => {
+    const jsonRes = {
+        "id": "",
+        "accessToken": "",
+        "msg": ""
+    }
     try{
         const body = req.body;
         //console.log(body.id, ", ", body.nombre, ", ", body.apellido, ", ", body.correo, ", ", body.password )
         if(body.nombre == undefined || body.apellido == undefined || body.correo == undefined || body.password == undefined ){
-            return res.status(500).json({message: `datos faltantes`})
+            jsonRes.msg = "datos faltantes";
+            return res.status(500).json(jsonRes)
         }else if(body.nombre == "" || body.apellido == "" || body.correo == "" || body.password == "" ){
-            return res.status(500).json({message: `campos vacíos`})
+            jsonRes.msg = "campos vacíos";
+            return res.status(500).json(jsonRes)
         }else{
+            //const query = `INSERT INTO usuarios (nombre, apellido, fecha_nacimiento, sexo, correo, password, tipoUsuario) VALUES ( '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}','${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
             const query = `INSERT INTO usuarios (nombre, apellido, correo, password) VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}')`;
             const [rows] = await pool.query(query);
-            res.status(201).send(rows);
+
+            user = await findUser(body.correo);
+            jsonRes.id = user.correo;         
+            jsonRes.msg = "usuario creado exitosamente";
+            res.status(201).json(jsonRes);
         }
+        //console.log(jsonRes)
     }catch (error) {
-        console.log(error);
+        //console.log(error);
         //REVISAR
         if(error.errno === 1062){
-            return res.status(500).json({message: `el usuario con el id: ${req.body.id} ya existe`});
+            jsonRes.msg = `el usuario ya existe`;
+            return res.status(500).json(jsonRes);
         }else if(error.errno === 1366 || error.errno === 1265){
-            return res.status(422).json({message: `el tipo de datos no coincide`});
+            jsonRes.msg = "el tipo de datos no coincide";
+            return res.status(422).json(jsonRes);
         }else if(error.errno === 1292 ){
-            return res.status(422).json({message: `el formato del campo fecha es invalido. es: (año-mes-dia)`});
+            jsonRes.msg = `el formato del campo fecha es invalido. es: (año-mes-dia)`;
+            return res.status(422).json(jsonRes);
         }else if(error.errno === 1406 ){
-            return res.status(422).json({message: `el dato excede la longitud para la col sexo (char)`});
+            jsonRes.msg = `el dato excede la longitud para la col sexo (char)`;
+            return res.status(422).json(jsonRes);
         }else{
-            return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/create'});
+            jsonRes.msg = 'Algo ha salido mal. ruta: usuariosServices/create';
+            return res.status(500).json(jsonRes);
         }
         
     }
+}
+
+const login = async (req, res) => {
+    const jsonRes = {
+        "id": "",
+        "accessToken": "",
+        "msg": ""
+    }
+    const headr = req.headers.api;
+    jsonRes.accessToken = headr;
+
+    const data = req.body;
+    const user = await findUser(data.correo);
+    //console.log(user);
+    if(user == 'usuario no encontrado'){
+        jsonRes.msg = user;
+        return res.status(404).json(jsonRes);
+    }else if(user.password == data.password){
+        jsonRes.id = user.id;
+        jsonRes.msg = "autenticacion exitosa";
+        return res.status(200).json(jsonRes);
+    }else{
+        jsonRes.msg = "contraseña incorrecta";
+        return res.status(401).json(jsonRes);
+    }
+    
 }
 
 const find = async (req, res) => {
@@ -66,6 +110,23 @@ const findOne = async (req, res) => {
     } 
 }
 
+
+const findUser = async (correoUsuario) => {
+    try{
+        
+        const query = `SELECT * FROM usuarios where correo = '${correoUsuario}'`;
+        const [rows] = await pool.query(query);
+    
+        if(rows.length <= 0 ){
+            return('usuario no encontrado');
+        }else{
+            return( rows[0] );
+        }
+    }catch (error) {
+        console.log(error)
+        //return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/findUser'});
+    } 
+}
 
 const update = async (req, res) => {
     try{
@@ -106,8 +167,11 @@ const deletear = async (req, res) => {
 
 module.exports = {
     create,
+    login,
     find,
     findOne,
     update,
     deletear
 }
+
+
