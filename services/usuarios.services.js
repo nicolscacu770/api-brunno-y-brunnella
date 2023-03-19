@@ -1,4 +1,5 @@
 const {pool} = require('./connectBD');
+const { JWT_KEY } = require('../config')
 
 
 const create = async (req, res) => {
@@ -51,28 +52,38 @@ const create = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    const { signToken } = require('../middlewares/token-sign');
     const jsonRes = {
         "id": "",
         "accessToken": "",
         "msg": ""
     }
-    const headr = req.headers.api;
-    jsonRes.accessToken = headr;
 
-    const data = req.body;
-    const user = await findUser(data.correo);
-    //console.log(user);
-    if(user == 'usuario no encontrado'){
-        jsonRes.msg = user;
-        return res.status(404).json(jsonRes);
-    }else if(user.password == data.password){
-        jsonRes.id = user.id;
-        jsonRes.msg = "autenticacion exitosa";
-        return res.status(200).json(jsonRes);
-    }else{
-        jsonRes.msg = "contraseña incorrecta";
-        return res.status(401).json(jsonRes);
+    try {
+        const data = req.body;
+        const user = await findUser(data.correo);
+        //console.log(user);
+        if(user == 'usuario no encontrado'){
+            jsonRes.msg = user;
+            return res.status(404).json(jsonRes);
+        }else if(user.password == data.password){
+            const payloadTok = {
+                sub: user.id,
+                role: user.tipoUsuario
+            }
+            token = signToken(payloadTok, JWT_KEY);
+            jsonRes.id = user.id;
+            jsonRes.accessToken = token;
+            jsonRes.msg = "autenticacion exitosa";
+            return res.status(200).json(jsonRes);
+        }else{
+            jsonRes.msg = "contraseña incorrecta";
+            return res.status(401).json(jsonRes);
+        }
+    } catch (error) {
+        return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/login'});
     }
+    
     
 }
 
@@ -110,7 +121,7 @@ const findOne = async (req, res) => {
     } 
 }
 
-
+//Static function of help for find users
 const findUser = async (correoUsuario) => {
     try{
         

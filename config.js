@@ -8,6 +8,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD || ''
 const DB_HOST = process.env.DB_HOST || 'localhost'
 const DB_PORT = process.env.DB_PORT || 3306
 const DB_DATABASE = process.env.DB_DATABASE || 'brunnella'
+const JWT_KEY = process.env.JWT_KEY || "bybkey"
 
 module.exports = {
     PORT,
@@ -15,6 +16,7 @@ module.exports = {
     DB_PASSWORD,
     DB_HOST,
     DB_PORT,
-    DB_DATABASE
+    DB_DATABASE,
+    JWT_KEY
 
 }

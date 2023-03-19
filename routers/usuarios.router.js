@@ -9,7 +9,7 @@ router.use(express.json());
 router.get('/', service.find);
 router.get('/:correo', service.findOne);
 
-router.post('/login', checkApiKey, service.login);//json{id, accToken, refrToken, msg:[no ex, contra inc, auth exitos]}
+router.post('/login', service.login);//json{id, accToken, refrToken, msg:[no ex, contra inc, auth exitos]}
 
 router.post('/', service.create);
 

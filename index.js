@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors')
 const routerApi = require('./routers/index.routers')
 const {PORT} = require('./config');
-const { checkApiKey } = require('./middlewares/auth.handler');
+
 
 const app = express();
 app.use(express.json());
@@ -23,9 +23,10 @@ app.get('/', (req, res) => {
   res.send('Servidor de B&B running en express')
 })
 
-app.get('/prueba-auth', checkApiKey, (req, res) => {
-  res.send('ruta de autentificación')
-})
+//PRUEBA AUTENTICACIÓN
+// app.get('/prueba-auth', checkApiKey, (req, res) => {
+//   res.send('ruta de autentificación')
+// })
 
 routerApi(app)
 
