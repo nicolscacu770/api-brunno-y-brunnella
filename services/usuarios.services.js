@@ -106,8 +106,8 @@ const find = async (req, res) => {
 
 const findOne = async (req, res) => {
     try{
-        correoUsuario = req.params.correo;
-        const query = `SELECT * FROM usuarios where correo = '${correoUsuario}'`;
+        idUsuario = req.params.id;
+        const query = `SELECT * FROM usuarios where id = '${idUsuario}'`;
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
