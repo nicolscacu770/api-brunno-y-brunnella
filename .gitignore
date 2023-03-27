@@ -6,5 +6,6 @@ back node.code-workspace
 index.http
 pruebaREST.http
 users.sql
+database.sql
 client.html
 ./services/auth.services
