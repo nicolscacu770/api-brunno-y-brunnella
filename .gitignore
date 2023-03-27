@@ -7,3 +7,4 @@ index.http
 pruebaREST.http
 users.sql
 client.html
+./services/auth.services

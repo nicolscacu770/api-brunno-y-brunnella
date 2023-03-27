@@ -1,6 +1,7 @@
-const {pool} = require('./connectBD');
+const { pool } = require('./connectBD');
 const { JWT_KEY } = require('../config')
-
+const { signToken } = require('../middlewares/token-sign');
+const { verifyToken } = require('../middlewares/token-verify');
 
 const create = async (req, res) => {
     const jsonRes = {
@@ -52,9 +53,9 @@ const create = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const { signToken } = require('../middlewares/token-sign');
     const jsonRes = {
         "id": "",
+        "tipo_usuario": "",
         "accessToken": "",
         "msg": ""
     }
@@ -71,8 +72,10 @@ const login = async (req, res) => {
                 sub: user.id,
                 role: user.tipoUsuario
             }
+            //firma del token
             token = signToken(payloadTok, JWT_KEY);
             jsonRes.id = user.id;
+            jsonRes.tipo_usuario = user.tipoUsuario;
             jsonRes.accessToken = token;
             jsonRes.msg = "autenticacion exitosa";
             return res.status(200).json(jsonRes);
@@ -85,6 +88,19 @@ const login = async (req, res) => {
     }
     
     
+}
+
+const verify = async (req, res) => {
+    try {
+        const data = req.body;
+        const payl = verifyToken(data.token);
+        console.log(payl);
+        return res.status(200).json({"auth": "1", "msg": "token activo"});
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/verify'});
+    }
 }
 
 const find = async (req, res) => {
@@ -116,7 +132,7 @@ const findOne = async (req, res) => {
             res.json(rows);
         }
     }catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/findOne'});
     } 
 }
@@ -136,7 +152,7 @@ const findUser = async (correoUsuario) => {
     }catch (error) {
         console.log(error)
         //return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/findUser'});
-    } 
+    }
 }
 
 const update = async (req, res) => {
@@ -179,6 +195,7 @@ const deletear = async (req, res) => {
 module.exports = {
     create,
     login,
+    verify,
     find,
     findOne,
     update,

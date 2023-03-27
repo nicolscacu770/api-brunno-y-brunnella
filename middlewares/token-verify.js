@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
+const { JWT_KEY } = require('../config');
 
-function verifyToken(token, secret){
+const secret = JWT_KEY;
+
+function verifyToken(token){
     return jwt.verify(token, secret);
 }
-
-// const payload = verifyToken(token, secret);
-// console.log(payload);
 
 module.exports = {
     verifyToken
