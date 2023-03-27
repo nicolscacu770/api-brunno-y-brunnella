@@ -20,7 +20,7 @@ const create = async (req, res) => {
             return res.status(500).json(jsonRes)
         }else{
             //const query = `INSERT INTO usuarios (nombre, apellido, fecha_nacimiento, sexo, correo, password, tipoUsuario) VALUES ( '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}','${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
-            const query = `INSERT INTO usuarios (nombre, apellido, correo, password) VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}')`;
+            const query = `INSERT INTO usuarios (nombre, apellido, correo, password) VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}');`;
             const [rows] = await pool.query(query);
 
             user = await findUser(body.correo);
@@ -105,7 +105,7 @@ const verify = async (req, res) => {
 
 const find = async (req, res) => {
     try{
-        const query = 'SELECT * from usuarios';
+        const query = 'SELECT * from usuarios;';
         const [rows] = await pool.query(query);
 
         if(rows.length <= 0 ){
@@ -123,7 +123,7 @@ const find = async (req, res) => {
 const findOne = async (req, res) => {
     try{
         idUsuario = req.params.id;
-        const query = `SELECT * FROM usuarios where id = '${idUsuario}'`;
+        const query = `SELECT * FROM usuarios where id = '${idUsuario}';`;
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
@@ -141,7 +141,7 @@ const findOne = async (req, res) => {
 const findUser = async (correoUsuario) => {
     try{
         
-        const query = `SELECT * FROM usuarios where correo = '${correoUsuario}'`;
+        const query = `SELECT * FROM usuarios where correo = '${correoUsuario}';`;
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
@@ -159,13 +159,13 @@ const update = async (req, res) => {
     try{
         const { correo } = req.params;
         const body = req.body;
-        const query = `UPDATE usuarios SET nombre = '${body.nombre}', apellido = '${body.apellido}', fecha_nacimiento = '${body.fecha_nacimiento}', sexo = '${body.sexo}', correo = '${body.correo}', password = '${body.password}', tipoUsuario = '${body.tipoUsuario}'    WHERE correo = '${correo}'`;
+        const query = `UPDATE usuarios SET nombre = '${body.nombre}', apellido = '${body.apellido}', fecha_nacimiento = '${body.fecha_nacimiento}', sexo = '${body.sexo}', correo = '${body.correo}', password = '${body.password}', tipoUsuario = '${body.tipoUsuario}'    WHERE correo = '${correo}';`;
         const [result] = await pool.query(query);
     
         if(result.affectedRows === 0){
             res.status(404).json({message: 'usuario no encontrado'});
         }else{
-            const [rows] = await pool.query(`SELECT * FROM usuarios WHERE id = '${id}'`)
+            const [rows] = await pool.query(`SELECT * FROM usuarios WHERE id = '${id}';`)
             res.json(rows);
         }
         //VALIDACIÓN DE CAMBIO DE CORREO EN CASO DE ESTAR DUPLICADO
@@ -177,7 +177,7 @@ const update = async (req, res) => {
 const deletear = async (req, res) => {
     try{
         const { correo } = req.params;
-        const query = `DELETE FROM usuarios WHERE correo = '${correo}'`;
+        const query = `DELETE FROM usuarios WHERE correo = '${correo}';`;
         const [result] = await pool.query(query);
         
         if(result.affectedRows <= 0 ){
