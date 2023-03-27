@@ -127,7 +127,7 @@ const findOne = async (req, res) => {
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
-            res.status(404).send('usuario no encontrado');
+            res.status(404).json({msg : 'usuario no encontrado'});
         }else{
             res.json(rows);
         }
