@@ -12,6 +12,7 @@ const pool = createPool(
         ssl: {"rejectUnauthorized":false}
     }
 )
+console.log('DB connected: ' + DB_HOST + ' p: ' + DB_PORT );
 
 module.exports = {
     pool
