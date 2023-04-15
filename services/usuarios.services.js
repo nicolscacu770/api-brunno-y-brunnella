@@ -1,3 +1,4 @@
+//const { pool } = require('./connectBD');
 const { pool } = require('./connectBD');
 const { JWT_KEY } = require('../config')
 const { signToken } = require('../middlewares/token-sign');
@@ -11,7 +12,6 @@ const create = async (req, res) => {
     }
     try{
         const body = req.body;
-        //console.log(body.id, ", ", body.nombre, ", ", body.apellido, ", ", body.correo, ", ", body.password )
         if(body.nombre == undefined || body.apellido == undefined || body.correo == undefined || body.password == undefined ){
             jsonRes.msg = "datos faltantes";
             return res.status(500).json(jsonRes)
@@ -70,6 +70,7 @@ const login = async (req, res) => {
         }else if(user.password == data.password){
             const payloadTok = {
                 sub: user.id,
+                exp: Date.now() + 20 * 60000, //se ingresa el tiempo de expiración en miliseg. Este caso 20 mins.
                 role: user.tipoUsuario
             }
             //firma del token
@@ -93,8 +94,14 @@ const login = async (req, res) => {
 const verify = async (req, res) => {
     try {
         const data = req.body;
+        const token = data.token;
+
         const payl = verifyToken(data.token);
         console.log(payl);
+        if( Date.now() > payl.exp){
+            return res.status(401).json({"auth": "0", "msg": "el token expiró"});
+        }
+
         return res.status(200).json({"auth": "1", "msg": "token activo"});
 
     } catch (error) {
@@ -105,8 +112,10 @@ const verify = async (req, res) => {
 
 const find = async (req, res) => {
     try{
-        const query = 'SELECT * from usuarios;';
+        const query = 'SELECT * from usuarios';
+        console.log('esperando respuesta');
         const [rows] = await pool.query(query);
+        console.log('respuesta: ' + rows);
 
         if(rows.length <= 0 ){
             res.status(404).send('usuarios no registrados');
@@ -115,6 +124,7 @@ const find = async (req, res) => {
         }
     }catch (error) {
         console.error(error);
+        console.log('\nrespuesta: ' + rows);
         return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/find' + error});
     }
     

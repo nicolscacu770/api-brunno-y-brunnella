@@ -1,5 +1,5 @@
 const { createPool } = require('mysql2/promise');
-const {DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT} = require('../configProd')
+const {DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT} = require('../config')
 
 //crea un pool que se refiere a multiples conexiones
 const pool = createPool(
@@ -12,7 +12,6 @@ const pool = createPool(
         ssl: {"rejectUnauthorized":false}
     }
 )
-console.log('DB connected: ' + DB_HOST + ' p: ' + DB_PORT )
 
 module.exports = {
     pool
