@@ -1,5 +1,8 @@
 const express = require('express');
 const service = require('../services/prendas.services');
+const upload = require('../middlewares/upload');
+const verifyReq = require('../middlewares/verifyReqPrendas');
+
 
 const router = express.Router();
 
@@ -9,9 +12,9 @@ router.get('/', service.find);
 
 router.get('/:id', service.findOne);
 
-router.post('/', service.create);
+router.post('/', upload.single('myFile'), service.create);
 
-router.patch('/:id', service.update);
+router.patch('/:id', upload.single('myFile'), service.update);
 
 router.delete('/:id', service.deletear);
 

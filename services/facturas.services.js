@@ -26,7 +26,7 @@ const create = async (req, res) => {
     }catch (error) {
         console.log(error);
         if(error.errno === 1452){
-            jsonRes.msg = "el usuario no existe";
+            jsonRes.msg = "el pedido no existe";
             return res.status(422).json(jsonRes);
         }else{
             jsonRes.msg = 'Algo ha salido mal. ruta: facturasServices/create';
