@@ -1,3 +1,4 @@
+//const { pool } = require('./connectBD');
 const { pool } = require('./connectBD');
 const { JWT_KEY } = require('../config')
 const { signToken } = require('../middlewares/token-sign');
@@ -18,6 +19,7 @@ const create = async (req, res) => {
             jsonRes.msg = "campos vacíos";
             return res.status(500).json(jsonRes)
         }else{
+            //const query = `INSERT INTO usuarios (nombre, apellido, fecha_nacimiento, sexo, correo, password, tipoUsuario) VALUES ( '${body.nombre}', '${body.apellido}', '${body.fecha_nacimiento}', '${body.sexo}','${body.correo}', '${body.password}', '${body.tipoUsuario}')`;
             const query = `INSERT INTO usuarios (nombre, apellido, correo, password) VALUES ( '${body.nombre}', '${body.apellido}', '${body.correo}', '${body.password}');`;
             const [rows] = await pool.query(query);
 
@@ -26,7 +28,10 @@ const create = async (req, res) => {
             jsonRes.msg = "usuario creado exitosamente";
             res.status(201).json(jsonRes);
         }
+        //console.log(jsonRes)
     }catch (error) {
+        //console.log(error);
+        //REVISAR
         if(error.errno === 1062){
             jsonRes.msg = `el usuario ya existe`;
             return res.status(500).json(jsonRes);
@@ -108,7 +113,10 @@ const verify = async (req, res) => {
 const find = async (req, res) => {
     try{
         const query = 'SELECT * from usuarios';
+        console.log('esperando respuesta');
         const [rows] = await pool.query(query);
+        console.log('respuesta: ' + rows);
+
         if(rows.length <= 0 ){
             res.status(404).send('usuarios no registrados');
         }else{
@@ -116,6 +124,7 @@ const find = async (req, res) => {
         }
     }catch (error) {
         console.error(error);
+        console.log('\nrespuesta: ' + rows);
         return res.status(500).json({message: 'Algo ha salido mal. ruta: usuariosServices/find' + error});
     }
     
