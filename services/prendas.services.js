@@ -36,7 +36,9 @@ const create = async (req, res) => {
 
             let imageUrl = "";
             if(req.file){
-                imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
+           //     imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
+                imageUrl = 'api-brunno-y-brunnella-production.up.railway.app' + req.file.filename;
+                
             }
 
             const query = `INSERT INTO prendas (nombre, precio, color, imagen, genero, categoria, descripcion) VALUES ( '${body.nombre}', '${body.precio}', '${body.color}', '${imageUrl}', '${body.genero}', '${body.categoria}', '${body.descripcion}')`;
