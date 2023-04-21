@@ -3,13 +3,23 @@ const multer = require('multer');
 const storage = multer.diskStorage({
  
     destination: function(req, file, cb){
-        console.log('abrió multer');
-        cb(null, 'imagenes/');
+        try {
+            console.log('abrió multer');
+            cb(null, 'imagenes/');      
+        } catch (error) {
+            console.log(error);
+        }
+      
     },
     filename: function (req, file, cb) {
-        console.log(file.originalname);
-        const extension = file.originalname.slice(file.originalname.lastIndexOf(".")); ///toma la extension del archivo, que aparece en el campo originalname
-        cb( null, file.originalname + '-'+ Date.now() + extension );
+        try {
+            console.log(file.originalname);
+            const extension = file.originalname.slice(file.originalname.lastIndexOf(".")); ///toma la extension del archivo, que aparece en el campo originalname
+            cb( null, file.originalname + '-'+ Date.now() + extension );     
+        } catch (error) {
+            console.log(error);
+        }
+       
     }
 })
 

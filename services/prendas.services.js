@@ -37,8 +37,8 @@ const create = async (req, res) => {
             let imageUrl = "";
             if(req.file){
                 console.log(req.file);
-           //     imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
-                imageUrl = 'api-brunno-y-brunnella-production.up.railway.app/api/imagenes/' + req.file.filename;
+                imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
+                //imageUrl = 'api-brunno-y-brunnella-production.up.railway.app/api/imagenes/' + req.file.filename;
                 
             }
 
