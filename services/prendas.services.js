@@ -9,7 +9,7 @@ const create = async (req, res) => {
     }
     try{
         const body = req.body;
-        console.log(body);
+        // console.log(body);
 
         if(body.nombre == undefined || body.precio == undefined || body.stock == undefined ){
             jsonRes.msg = "datos faltantes";
@@ -22,9 +22,9 @@ const create = async (req, res) => {
 
             let imageUrl = "";
             if(req.file){
-                console.log(req.file);
-                //imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
-                imageUrl = 'api-brunno-y-brunnella-production.up.railway.app/api/imagenes/' + req.file.filename;
+                // console.log(req.file);
+                imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
+                // imageUrl = 'api-brunno-y-brunnella-production.up.railway.app/api/imagenes/' + req.file.filename;
                 
             }
 

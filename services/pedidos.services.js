@@ -24,7 +24,7 @@ const create = async (req, res) => {
                 today = new Date();
                 const date = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
                 //crear objeto pedido
-                const query = `INSERT INTO pedidos (fecha, estado, guia_envio, IDusuario, total) VALUES ( '${date}', '${body.estado}', '${body.guia_envio}', '${body.IDusuario}', ${body.total} )`;
+                const query = `INSERT INTO pedidos (fecha, estado, guia_envio, IDusuario, total) VALUES ( '${date}', 'pendiente', '${body.guia_envio}', '${body.IDusuario}', ${body.total} )`;
                 const [rows] = await pool.query(query);
                 [idpedido] = await pool.query(`SELECT max(id) FROM pedidos`);
                 idpedido = idpedido[0]['max(id)'];

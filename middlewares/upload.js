@@ -4,7 +4,7 @@ const storage = multer.diskStorage({
  
     destination: function(req, file, cb){
         try {
-            console.log('abrió multer');
+            // console.log('abrió multer');
             cb(null, 'imagenes/');      
         } catch (error) {
             console.log(error);
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         try {
-            console.log(file.originalname);
+            // console.log(file.originalname);
             const extension = file.originalname.slice(file.originalname.lastIndexOf(".")); ///toma la extension del archivo, que aparece en el campo originalname
             cb( null, file.originalname + '-'+ Date.now() + extension );     
         } catch (error) {
