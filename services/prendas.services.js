@@ -10,20 +10,6 @@ const create = async (req, res) => {
     try{
         const body = req.body;
         console.log(body);
-        // let str = '[{ "talla": "S", "cantidad": 3 }, { "talla": "M", "cantidad": 2 } ]';
-        // console.log('str type: ' + typeof str);
-        // console.log(str);
-        // const json = JSON.parse(str);
-        // console.log(json);
-        // console.log(typeof json);
-
-        //console.log(typeof body.stock + ' ' + body.stock);
-        // const p = `'${body.stock}'`;
-        // console.log(p);
-        // '{"nombre": "gabriel"}'
-        // const jsonStock = JSON.parse(body.stock);
-        // console.log(jsonStock[0]);
-        // console.log(typeof jsonStock);
 
         if(body.nombre == undefined || body.precio == undefined || body.stock == undefined ){
             jsonRes.msg = "datos faltantes";
@@ -37,8 +23,8 @@ const create = async (req, res) => {
             let imageUrl = "";
             if(req.file){
                 console.log(req.file);
-                imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
-                //imageUrl = 'api-brunno-y-brunnella-production.up.railway.app/api/imagenes/' + req.file.filename;
+                //imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
+                imageUrl = 'api-brunno-y-brunnella-production.up.railway.app/api/imagenes/' + req.file.filename;
                 
             }
 
