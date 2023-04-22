@@ -9,7 +9,7 @@ const create = async (req, res) => {
         "msg": ""
     }
     try{
-        console.log('RUTA:  ' , path.join(__dirname, 'imagenes/'));
+        console.log('RUTA:  ' , path.join(__dirname, '/../imagenes/'));
         const body = req.body;
         // console.log(body);
 
