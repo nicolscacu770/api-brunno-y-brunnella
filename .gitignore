@@ -9,3 +9,6 @@ users.sql
 database.sql
 client.html
 ./services/auth.services
+# Local Netlify folder
+.netlify
+.editorconfig

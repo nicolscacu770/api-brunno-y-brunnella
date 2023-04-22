@@ -1,11 +1,12 @@
 const multer = require('multer');
+const path = require('path');
 
 const storage = multer.diskStorage({
  
     destination: function(req, file, cb){
         try {
             // console.log('abrió multer');
-            cb(null, 'imagenes/');      
+            cb(null, path.join(__dirname, 'imagenes/'));      
         } catch (error) {
             console.log(error);
         }

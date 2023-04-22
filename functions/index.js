@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors')
-const routerApi = require('./routers/index.routers')
+const routerApi = require('../routers/index.routers')
 const serverless = require('serverless-http');
-const {PORT} = require('./config');
-const router = require('./routers/usuarios.router');
+const {PORT} = require('../config');
+const router = require('../routers/usuarios.router');
 
 
 const app = express();
@@ -39,5 +39,5 @@ app.listen(PORT, () => {
     console.log(`servidor Brunno & Brunnella en el port ${PORT}`);
 })
 
-app.use('/.netlify/functions/api', router);
+app.use('/.netlify/functions/index', router);
 module.exports.handler = serverless(app);

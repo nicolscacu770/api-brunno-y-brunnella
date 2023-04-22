@@ -1,5 +1,6 @@
 const {pool} = require('./connectBD');
-const { JWT_KEY } = require('../config')
+const { JWT_KEY } = require('../config');
+const path = require('path');
 
 //esta funcion recibe los párametros por medio de un form-data para poder recibir la imagen que es de tipo archivo, recibido en el middleware 'upload'
 const create = async (req, res) => {
@@ -8,6 +9,7 @@ const create = async (req, res) => {
         "msg": ""
     }
     try{
+        console.log('RUTA:  ' , path.join(__dirname, 'imagenes/'));
         const body = req.body;
         // console.log(body);
 
