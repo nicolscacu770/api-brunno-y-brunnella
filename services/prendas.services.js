@@ -1,6 +1,6 @@
 const {pool} = require('./connectBD');
 const { JWT_KEY } = require('../config');
-const path = require('path');
+// const path = require('path');
 
 //esta funcion recibe los párametros por medio de un form-data para poder recibir la imagen que es de tipo archivo, recibido en el middleware 'upload'
 const create = async (req, res) => {
@@ -9,7 +9,6 @@ const create = async (req, res) => {
         "msg": ""
     }
     try{
-        console.log('RUTA:  ' , path.join(__dirname, '/../imagenes/'));
         const body = req.body;
         // console.log(body);
 
@@ -24,10 +23,8 @@ const create = async (req, res) => {
 
             let imageUrl = "";
             if(req.file){
-                // console.log(req.file);
-                //imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
-                imageUrl = 'https://api-brunno-y-brunnella.vercel.app/api/imagenes/' + req.file.filename;
-                
+                console.log(req.file);
+                imageUrl = req.file.imageUrl;
             }
 
             const query = `INSERT INTO prendas (nombre, precio, color, imagen, genero, categoria, descripcion) VALUES ( '${body.nombre}', '${body.precio}', '${body.color}', '${imageUrl}', '${body.genero}', '${body.categoria}', '${body.descripcion}')`;
@@ -108,7 +105,7 @@ const update = async (req, res) => {
         let imageUrl = body.imagen;
         if(req.file){
             console.log(req.file);
-            imageUrl = 'http://localhost:3001/api/imagenes/' + req.file.filename;
+            imageUrl = req.file.imageUrl;
         }
 
         const query = `UPDATE prendas SET nombre = '${body.nombre}', precio = '${body.precio}', descuento = '${body.descuento}', imagen = '${imageUrl}', color = '${body.color}', genero = '${body.genero}', categoria = '${body.categoria}', descripcion = '${body.descripcion}' WHERE id = '${id}'`;

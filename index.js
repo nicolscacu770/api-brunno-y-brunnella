@@ -39,5 +39,6 @@ app.listen(PORT, () => {
     console.log(`servidor Brunno & Brunnella en el port ${PORT}`);
 })
 
-app.use('/.netlify/functions/api', router);
+app.use('/.netlify/functions/index', router);
+module.exports = app;
 module.exports.handler = serverless(app);
