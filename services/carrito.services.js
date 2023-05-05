@@ -167,10 +167,6 @@ const update = async (req, res) => {
                     await pool.query( `UPDATE carrito_prenda SET talla = '${prendas[i].talla}', cantidad = '${prendas[i].cantidad}' WHERE id = ${id} and IDprenda = ${prendas[i].IDprenda}` )
                     //await pool.query( `UPDATE stock_talla SET cantidad = ${newStock} where IDprenda = ${prendas[i].IDprenda} and talla = '${prendas[i].talla}'` )
                 }
-
-                // jsonRes.id = idcarrito;         
-                // jsonRes.msg = "carrito creado exitosamente";
-                // return res.status(200).json(jsonRes);
             }else{
                 jsonRes.msg = verStock;
                 return res.status(500).json(jsonRes)
