@@ -8,7 +8,9 @@ pruebaREST.http
 users.sql
 database.sql
 client.html
-./services/auth.services
+auth.services
 # Local Netlify folder
 .netlify
 .editorconfig
+BybDb.sql
+saved_resource.html

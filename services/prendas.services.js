@@ -23,7 +23,7 @@ const create = async (req, res) => {
 
             let imageUrl = "";
             if(req.file){
-                console.log(req.file);
+                //console.log(req.file);
                 imageUrl = req.file.imageUrl;
             }
 

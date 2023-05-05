@@ -2,6 +2,7 @@ const express = require ('express');
 const usersRouter = require('./usuarios.router');
 const prendasRouter = require('./prendas.router');
 const pedidosRouter = require('./pedidos.router');
+const carritoRouter = require('./carrito.router');
 const facturasRouter = require('./facturas.router');
 const cuponesRouter = require('./cupones.router');
 const direccionesRouter = require('./direcciones.router');
@@ -13,6 +14,7 @@ function routerApi(app) {
   router.use('/usuarios', usersRouter);
   router.use('/prendas', prendasRouter);
   router.use('/pedidos', pedidosRouter);
+  router.use('/carrito', carritoRouter);
   router.use('/facturas', facturasRouter);
   router.use('/cupones', cuponesRouter);
   router.use('/direcciones', direccionesRouter);

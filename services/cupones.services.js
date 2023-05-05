@@ -1,8 +1,4 @@
-//const { pool } = require('./connectBD');
 const { pool } = require('./connectBD');
-const { JWT_KEY } = require('../config')
-const { signToken } = require('../middlewares/token-sign');
-const { verifyToken } = require('../middlewares/token-verify');
 
 const create = async (req, res) => {
     const jsonRes = {
@@ -58,8 +54,8 @@ const find = async (req, res) => {
 
 const findOne = async (req, res) => {
     try{
-        idCorreo = req.params.id;
-        const query = `SELECT * FROM cupones_descuento where id = '${idCorreo}';`;
+        idCupon = req.params.id;
+        const query = `SELECT * FROM cupones_descuento where id = '${idCupon}';`;
         const [rows] = await pool.query(query);
     
         if(rows.length <= 0 ){
@@ -94,7 +90,7 @@ const update = async (req, res) => {
 const deletear = async (req, res) => {
     try{
         const { id } = req.params;
-        const query = `DELETE FROM cupones_descuento WHERE correo = '${id}';`;
+        const query = `DELETE FROM cupones_descuento WHERE id = '${id}';`;
         const [result] = await pool.query(query);
         
         if(result.affectedRows <= 0 ){

@@ -26,7 +26,7 @@ async function subirImagen(req, res, next) {
                 }else {
                     //console.log('RESULTADO IMG:  ' , result);
                     Object.assign(req.file, { "imageUrl": result.secure_url } );
-                    console.log(req.file);
+                    //console.log(req.file);
                     next();
                     //res.status(200).json({msg: "creado correctamente"});
                 }
